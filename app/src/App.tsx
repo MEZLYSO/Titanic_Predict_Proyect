@@ -7,7 +7,7 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const URL = "http://localhost:5000/predict"
+  const URL = "https://titanic-predict-proyect.onrender.com/predict"
 
   const handleChange = (e: any) => {
     setPassager({
