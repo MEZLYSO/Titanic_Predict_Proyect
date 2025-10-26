@@ -128,12 +128,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS: allow the frontend origin(s). You can set CORS_ALLOWED_ORIGINS via env var
-CORS_ALLOWED_ORIGINS = os.environ.get(
-    'CORS_ALLOWED_ORIGINS',
-    'https://titanic-predict-proyect-4sbc.vercel.app'
-).split(',')
-
-# Optionally allow all origins when explicitly set
-if os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'False') == 'True':
-    CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
