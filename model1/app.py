@@ -1,9 +1,7 @@
 import pandas as pd
-from flask import Flask, jsonify, request
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from flask_cors import CORS
 
 train_data= pd.read_csv("train.csv")
 train_data['Age'].fillna(train_data['Age'].median(), inplace=True)
@@ -23,12 +21,8 @@ X_train, X_val, y_train, y_val = train_test_split(X, Y, test_size=0.2, random_st
 
 model = LogisticRegression(max_iter=250)
 model.fit(X_train, y_train)
-app = Flask("__name__")
 
-CORS(app)
-
-@app.route("/predict", methods=["POST"])
-def predict():
+def predict(data):
     try:
         # Obtener datos del request
         data = request.get_json()
@@ -63,6 +57,3 @@ def predict():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-if __name__ == "__main__":
-    app.run(debug=True)
