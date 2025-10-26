@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w6oulm0y-wbc&-^)wk#cp*_t%-gq)%04=yu!@h)5v#!nxy!@lg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+# Allow hosts from an env var (comma separated) or use sensible defaults for dev + Render
+default_hosts = ['127.0.0.1', 'localhost', 'titanic-predict-proyect.onrender.com']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ','.join(default_hosts)).split(',')
 
 
 # Application definition
@@ -125,6 +128,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS=[
+# CORS: allow the frontend origin(s). You can set CORS_ALLOWED_ORIGINS via env var
+CORS_ALLOWED_ORIGINS = os.environ.get(
+    'CORS_ALLOWED_ORIGINS',
     'https://titanic-predict-proyect-4sbc.vercel.app'
-]
+).split(',')
+
+# Optionally allow all origins when explicitly set
+if os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'False') == 'True':
+    CORS_ALLOW_ALL_ORIGINS = True
